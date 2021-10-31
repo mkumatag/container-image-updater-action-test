@@ -6,6 +6,7 @@ jobs:
     name: A job to say hello
     steps:
       - name: Container Image Updater
+        id: check
         uses: mkumatag/container-image-updater-action@v1.0.2
         with:
           base-image: 'alpine:3.14'
@@ -14,4 +15,4 @@ jobs:
           registry-password: 'somesecret'
       # Use the output from the `hello` step
       - name: Get the output time
-        run: echo "The time was ${{ steps.hello.outputs.needs-update }}"
+        run: echo "The time was ${{ steps.check.outputs.needs-update }}"
