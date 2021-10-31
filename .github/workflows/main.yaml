@@ -7,7 +7,7 @@ jobs:
     steps:
       - name: Container Image Updater
         id: check
-        uses: mkumatag/container-image-updater-action@v1
+        uses: mkumatag/container-image-updater-action@v1.0.3
         with:
           base-image: 'alpine:3.14'
           image: 'myimage:latest'
