@@ -7,12 +7,14 @@ jobs:
     steps:
       - name: Container Image Updater
         id: check
-        uses: mkumatag/container-image-updater-action@v1.0.2
+        uses: mkumatag/container-image-updater-action@v1
         with:
           base-image: 'alpine:3.14'
           image: 'myimage:latest'
-          registry-username: 'someuser'
-          registry-password: 'somesecret'
+          base-reg-username: 'someuser'
+          base-reg-password: 'somesecret'
+          image-reg-username: 'someuser'
+          image-reg-password: 'somesecret'
       # Use the output from the `hello` step
       - name: Get the output time
         run: echo "The time was ${{ steps.check.outputs.needs-update }}"
