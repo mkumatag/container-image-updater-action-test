@@ -3,18 +3,22 @@ on: [push]
 jobs:
   hello_world_job:
     runs-on: ubuntu-latest
-    name: A job to say hello
+    name: Check if container image update required
     steps:
       - name: Container Image Updater
         id: check
-        uses: mkumatag/container-image-updater-action@v1.0.3
+        uses: mkumatag/container-image-updater-action@v1.0.5
         with:
           base-image: 'alpine:3.14'
-          image: 'myimage:latest'
-          base-reg-username: 'someuser'
-          base-reg-password: 'somesecret'
-          image-reg-username: 'someuser'
-          image-reg-password: 'somesecret'
-      # Use the output from the `hello` step
-      - name: Get the output time
-        run: echo "The time was ${{ steps.check.outputs.needs-update }}"
+          image: 'ghcr.io/mkumatag/container-image-updater-action:v1.0'
+      - name: Image update
+        run: echo "Image update required ${{ steps.check.outputs.needs-update }}"
+
+      - name: Container Image Updater
+        id: check2
+        uses: mkumatag/container-image-updater-action@v1.0.5
+        with:
+          base-image: 'alpine:3.14'
+          image: 'alpine:3.13'
+      - name: Image update for alpine:3.13
+        run: echo "Image update required ${{ steps.check2.outputs.needs-update }}"
