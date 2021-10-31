@@ -8,7 +8,10 @@ jobs:
       - name: Container Image Updater
         uses: mkumatag/container-image-updater-action@v1.0.2
         with:
-          who-to-greet: 'Mona the Octocat'
+          base-image: 'alpine:3.14'
+          image: 'myimage:latest'
+          registry-username: 'someuser'
+          registry-password: 'somesecret'
       # Use the output from the `hello` step
       - name: Get the output time
         run: echo "The time was ${{ steps.hello.outputs.time }}"
