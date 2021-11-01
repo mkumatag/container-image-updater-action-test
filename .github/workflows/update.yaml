@@ -1,21 +1,27 @@
-name: Create and publish a Docker image
+name: check container image
 
-on: [push]
+on:
+  schedule:
+    - cron:  '0 0 * * *'
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: mkumatag/hello-world
 
 jobs:
-  build-and-push-image:
+  hello_world_job:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
+    name: Check if container image update required
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - name: Container Image Updater
+        id: check
+        uses: mkumatag/container-image-updater-action@v1.0.5
+        with:
+          base-image: 'registry.access.redhat.com/ubi8/ubi-minimal'
+          image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+
+      - name: Image update
+        run: echo "Image update required ${{ steps.check.outputs.needs-update }}"
 
       - name: Log in to the Container registry
         uses: docker/login-action@v1.10.0
@@ -31,3 +37,4 @@ jobs:
           file: Dockerfile
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+        if: steps.check.outputs.needs-update == 'true'
